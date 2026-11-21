@@ -1,4 +1,5 @@
-```html
+
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -477,3 +478,243 @@
           childGrade: document.getElementById("childGrade").value,
           parentName: document.getElementById("parentName").value.trim(),
           parentPhone: documen
+           <script>
+    function openAdminModalDirect() {
+      var modal = document.getElementById("adminLoginModal");
+      if (modal) modal.classList.remove("hidden");
+    }
+    function closeAdminModalDirect() {
+      var modal = document.getElementById("adminLoginModal");
+      if (modal) modal.classList.add("hidden");
+    }
+    document.getElementById("toggleAdminBtn").addEventListener("click", openAdminModalDirect);
+    document.getElementById("closeAdminModalBtn").addEventListener("click", closeAdminModalDirect);
+  </script>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, addDoc, onSnapshot, doc, setDoc, updateDoc, deleteDoc, increment, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAWfuTnGJak7eCkokoEwo39tF2UPvUoP6c",
+      authDomain: "noura-workshop.firebaseapp.com",
+      projectId: "noura-workshop",
+      storageBucket: "noura-workshop.firebasestorage.app",
+      messagingSenderId: "841163560543",
+      appId: "1:841163560543:web:681e05f6bef46508036dea",
+      measurementId: "G-JC6RSSF35R"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    let allRegistrations = [];
+    let unsubscribeAdminRegs = null;
+    let isSubmitting = false;
+
+    const publicStatsRef = doc(db, "stats", "public");
+    onSnapshot(publicStatsRef, (snap) => {
+      const total = snap.exists() && typeof snap.data().totalChildren === "number" ? Math.max(0, snap.data().totalChildren) : 0;
+      document.getElementById("liveTotalCounter").textContent = total;
+    });
+
+    document.getElementById("registrationForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (isSubmitting) return;
+      const submitBtn = document.getElementById("submitBtn");
+      const errorAlert = document.getElementById("formErrorAlert");
+      const errorText = document.getElementById("formErrorText");
+      errorAlert.classList.add("hidden");
+      isSubmitting = true;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<span class="inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span> <span>جاري حفظ البيانات على السحابة...</span>`;
+
+      try {
+        await addDoc(collection(db, "registrations"), {
+          childName: document.getElementById("childName").value.trim(),
+          childAge: Number(document.getElementById("childAge").value),
+          childGrade: document.getElementById("childGrade").value,
+          parentName: document.getElementById("parentName").value.trim(),
+          parentPhone: document.getElementById("parentPhone").value.trim(),
+          notes: document.getElementById("notes").value.trim(),
+          attended: false,
+          createdAt: serverTimestamp()
+        });
+        try { await setDoc(publicStatsRef, { totalChildren: increment(1) }, { merge: true }); } catch (ce) {}
+        document.getElementById("registrationForm").reset();
+        document.getElementById("registrationForm").classList.add("hidden");
+        document.getElementById("successAlert").classList.remove("hidden");
+      } catch (err) {
+        errorText.textContent = "عذراً، تعذر حفظ البيانات حالياً. يرجى التحقق من اتصال الإنترنت والمحاولة مرة أخرى.";
+        errorAlert.classList.remove("hidden");
+      } finally {
+        isSubmitting = false;
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `<span>✅ تأكيد التسجيل في الورشة</span>`;
+      }
+    });
+
+    document.getElementById("registerAnotherBtn").addEventListener("click", () => {
+      document.getElementById("successAlert").classList.add("hidden");
+      document.getElementById("formErrorAlert").classList.add("hidden");
+      document.getElementById("registrationForm").reset();
+      document.getElementById("registrationForm").classList.remove("hidden");
+    });
+
+    function startAdminListener() {
+      if (unsubscribeAdminRegs) unsubscribeAdminRegs();
+      const q = query(collection(db, "registrations"), orderBy("createdAt", "desc"));
+      unsubscribeAdminRegs = onSnapshot(q, (snapshot) => {
+        allRegistrations = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+        document.getElementById("adminTotalCount").textContent = allRegistrations.length;
+        renderRegistrationsTable();
+      });
+    }
+
+    document.getElementById("toggleAdminBtn").addEventListener("click", () => {
+      if (auth.currentUser) {
+        document.getElementById("adminLoginModal").classList.add("hidden");
+        document.getElementById("publicSection").classList.add("hidden");
+        document.getElementById("adminDashboard").classList.remove("hidden");
+      }
+    });
+
+    document.getElementById("adminLoginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("adminEmail").value.trim();
+      const pass = document.getElementById("adminPassword").value;
+      const errBox = document.getElementById("loginErrorBox");
+      const errEl = document.getElementById("loginErrorMsg");
+      const loginBtn = document.getElementById("adminLoginBtn");
+      errBox.classList.add("hidden");
+      loginBtn.disabled = true;
+      loginBtn.textContent = "جاري الدخول...";
+
+      try {
+        await signInWithEmailAndPassword(auth, email, pass);
+        document.getElementById("adminLoginModal").classList.add("hidden");
+      } catch (err) {
+        if (err.code === "auth/unauthorized-domain") {
+          errEl.textContent = "⚠️ هذا الرابط (" + window.location.hostname + ") غير مضاف في إعدادات Firebase! أضيفيه في Authorized domains داخل Firebase Authentication.";
+        } else if (err.code === "auth/invalid-credential" || err.code === "auth/wrong-password" || err.code === "auth/user-not-found") {
+          errEl.textContent = "❌ البريد الإلكتروني أو كلمة المرور غير صحيحة.";
+        } else {
+          errEl.textContent = "حدث خطأ أثناء الدخول: " + err.message;
+        }
+        errBox.classList.remove("hidden");
+      } finally {
+        loginBtn.disabled = false;
+        loginBtn.textContent = "دخول اللوحة";
+      }
+    });
+
+    document.getElementById("adminLogoutBtn").addEventListener("click", async () => {
+      if (unsubscribeAdminRegs) { unsubscribeAdminRegs(); unsubscribeAdminRegs = null; }
+      allRegistrations = [];
+      await signOut(auth);
+      document.getElementById("adminDashboard").classList.add("hidden");
+      document.getElementById("publicSection").classList.remove("hidden");
+    });
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        document.getElementById("adminLoginModal").classList.add("hidden");
+        document.getElementById("publicSection").classList.add("hidden");
+        document.getElementById("adminDashboard").classList.remove("hidden");
+        startAdminListener();
+      } else {
+        document.getElementById("adminDashboard").classList.add("hidden");
+        document.getElementById("publicSection").classList.remove("hidden");
+      }
+    });
+
+    document.getElementById("syncCounterBtn").addEventListener("click", async () => {
+      try {
+        await setDoc(publicStatsRef, { totalChildren: allRegistrations.length }, { merge: true });
+        alert("تمت مزامنة العداد العام بنجاح (" + allRegistrations.length + " طفل).");
+      } catch (err) { alert("تعذر مزامنة العداد: " + err.message); }
+    });
+
+    window.toggleAttendance = async (id, current) => {
+      try { await updateDoc(doc(db, "registrations", id), { attended: !current }); } catch (err) { alert("تعذر تحديث حالة الحضور."); }
+    };
+
+    window.deleteReg = async (id) => {
+      if (confirm("هل أنتِ متأكدة من حذف هذا التسجيل نهائياً؟")) {
+        try {
+          await deleteDoc(doc(db, "registrations", id));
+          await setDoc(publicStatsRef, { totalChildren: increment(-1) }, { merge: true });
+        } catch (err) { alert("تعذر حذف التسجيل."); }
+      }
+    };
+
+    function escapeHTML(str) {
+      return String(str || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    }
+
+    function renderRegistrationsTable() {
+      const term = (document.getElementById("searchInput").value || "").toLowerCase().trim();
+      const tbody = document.getElementById("registrationsTableBody");
+      const filtered = allRegistrations.filter(r =>
+        (r.childName || "").toLowerCase().includes(term) ||
+        (r.parentName || "").toLowerCase().includes(term) ||
+        (r.parentPhone || "").includes(term)
+      );
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="p-6 text-center text-slate-400 font-bold">لا توجد تسجيلات مطابقة للبحث حالياً</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = filtered.map((reg, index) => `
+        <tr class="hover:bg-slate-50 transition">
+          <td class="p-3 font-bold text-slate-500">${index + 1}</td>
+          <td class="p-3 font-extrabold text-slate-900">${escapeHTML(reg.childName)}</td>
+          <td class="p-3"><span class="font-bold text-indigo-800">${escapeHTML(reg.childAge)} سنوات</span><div class="text-xs text-slate-500">${escapeHTML(reg.childGrade)}</div></td>
+          <td class="p-3"><div class="font-bold text-slate-800">${escapeHTML(reg.parentName)}</div><a href="tel:${escapeHTML(reg.parentPhone)}" class="text-xs text-emerald-700 font-bold hover:underline" dir="ltr">${escapeHTML(reg.parentPhone)}</a></td>
+          <td class="p-3 text-xs text-slate-600 max-w-[150px] break-words">${escapeHTML(reg.notes || "-")}</td>
+          <td class="p-3"><button type="button" onclick="toggleAttendance('${reg.id}', ${Boolean(reg.attended)})" class="px-3 py-1.5 rounded-lg text-xs font-bold transition ${reg.attended ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">${reg.attended ? '✅ حضر' : '⏳ لم يحضر'}</button></td>
+          <td class="p-3"><button type="button" onclick="deleteReg('${reg.id}')" class="text-red-500 hover:bg-red-50 p-2 rounded-lg transition">🗑️</button></td>
+        </tr>
+      `).join("");
+    }
+
+    document.getElementById("searchInput").addEventListener("input", renderRegistrationsTable);
+
+    document.getElementById("exportExcelBtn").addEventListener("click", () => {
+      if (allRegistrations.length === 0) { alert("لا توجد بيانات لتصديرها حالياً."); return; }
+      const headers = ["م", "اسم الطفل", "العمر", "المرحلة الدراسية", "اسم ولي الأمر", "رقم الهاتف", "حالة الحضور", "ملاحظات", "تاريخ التسجيل"];
+      const rows = allRegistrations.map((r, i) => [
+        i + 1, `"${(r.childName || "").replace(/"/g, '""')}"`, r.childAge || "", `"${(r.childGrade || "").replace(/"/g, '""')}"`,
+        `"${(r.parentName || "").replace(/"/g, '""')}"`, `"${(r.parentPhone || "").replace(/"/g, '""')}"`,
+        r.attended ? "حضر" : "لم يحضر", `"${(r.notes || "").replace(/"/g, '""')}"`,
+        `"${r.createdAt && r.createdAt.toDate ? r.createdAt.toDate().toLocaleString("ar-EG") : ""}"`
+      ].join(","));
+      const blob = new Blob(["\uFEFF" + [headers.join(","), ...rows].join("\n")], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `مسجلين_ورشة_المدربة_نوره_صبحي_${new Date().toISOString().slice(0,10)}.csv`;
+      document.body.appendChild(link); link.click(); document.body.removeChild(link); URL.revokeObjectURL(url);
+    });
+
+    document.getElementById("shareWaBtn").addEventListener("click", () => {
+      const msg = `✨ سارعوا بتسجيل أطفالكم في الورشة المجانية للحساب الذهني وتنمية المهارات بمركز شباب المنشأة الكبرى تحت إشراف المدربة نوره صبحي 🧮🌟\n\nللتسجيل المباشر عبر الرابط:\n${window.location.href}`;
+      window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank");
+    });
+
+    document.getElementById("shareFbBtn").addEventListener("click", () => {
+      window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`, "_blank");
+    });
+
+    document.getElementById("copyLinkBtn").addEventListener("click", async () => {
+      const btn = document.getElementById("copyLinkBtn");
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        btn.textContent = "✅ تم نسخ الرابط!";
+        setTimeout(() => { btn.textContent = "🔗 نسخ رابط التسجيل"; }, 2500);
+      } catch (err) { prompt("انسخ رابط التسجيل من هنا:", window.location.href); }
+    });
+  </script>
+</body>
+</html>
