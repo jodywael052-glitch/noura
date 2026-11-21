@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -5,203 +6,388 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ورشة عمل مجانية للأطفال - المدربة نوره صبحي</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
-    body { font-family: 'Cairo', sans-serif; padding-bottom: 100px; }
+    body {
+      font-family: 'Cairo', sans-serif;
+      background-color: #f8fafc;
+    }
+    .hero-gradient {
+      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1d4ed8 100%);
+    }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen">
+<body class="text-slate-800 antialiased selection:bg-indigo-600 selection:text-white">
 
-  <header class="bg-white shadow-sm sticky top-0 z-30">
-    <div class="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
+  <!-- إشعار منبثق أنيق بديل للرسائل التقليدية -->
+  <div id="toastBox" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-[100] hidden transition-all duration-300">
+    <div id="toastContent" class="px-6 py-3.5 rounded-2xl shadow-2xl font-bold text-sm text-white flex items-center gap-2.5 bg-slate-900">
+      <span id="toastIcon">✅</span>
+      <span id="toastText">تمت العملية بنجاح</span>
+    </div>
+  </div>
+
+  <!-- الشريط العلوي -->
+  <header class="bg-white/95 backdrop-blur-md sticky top-0 z-40 border-b border-slate-200/80 shadow-sm">
+    <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-indigo-900 text-amber-400 font-extrabold text-xl flex items-center justify-center shadow">ن</div>
+        <div class="w-11 h-11 rounded-2xl bg-indigo-900 text-amber-400 flex items-center justify-center font-black text-2xl shadow-md shrink-0">
+          ن
+        </div>
         <div>
-          <h1 class="font-bold text-slate-900 text-sm sm:text-base leading-tight">المدربة نوره صبحي</h1>
-          <p class="text-xs text-slate-500">حساب ذهني وتنمية مهارات الأطفال</p>
+          <h1 class="font-extrabold text-slate-900 text-base sm:text-lg leading-tight">المدربة نوره صبحي</h1>
+          <p class="text-xs text-slate-500 font-semibold">حساب ذهني وتنمية مهارات الأطفال</p>
         </div>
       </div>
-      <button id="toggleAdminBtn" type="button" onclick="openAdminModal()" class="flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold px-3 py-2 rounded-lg transition">
-        <span>لوحة الإدارة</span>
+
+      <button
+        type="button"
+        onclick="openAdminModal()"
+        class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-indigo-50 text-slate-800 hover:text-indigo-900 font-bold text-xs sm:text-sm border border-slate-200 transition active:scale-95 cursor-pointer"
+      >
         <span>🔒</span>
+        <span>لوحة الإدارة</span>
       </button>
     </div>
   </header>
 
-  <main id="publicSection">
-    <div class="bg-gradient-to-b from-blue-800 to-indigo-900 text-white pt-8 pb-16 px-4 text-center">
-      <div class="max-w-2xl mx-auto">
-        <span class="inline-block bg-blue-700/70 border border-blue-400/30 text-amber-300 text-xs font-bold px-4 py-1.5 rounded-full mb-4">
-          ✨ فعالية تعليمية مجانية ومميزة للأطفال
-        </span>
-        <h2 class="text-2xl sm:text-4xl font-extrabold leading-snug mb-3">
-          ورشة عمل مجانية للأطفال بمركز شباب المنشأة الكبرى
-        </h2>
-        <p class="text-blue-100 text-sm sm:text-base mb-6">
-          إشراف وتنظيم: <strong class="text-amber-300">المدربة نوره صبحي</strong> - مدربة حساب ذهني وتنمية مهارات الأطفال
-        </p>
+  <!-- القسم الرئيسي (Hero) -->
+  <section class="hero-gradient text-white pt-10 pb-20 px-4 text-center relative overflow-hidden">
+    <div class="max-w-3xl mx-auto relative z-10">
+      <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/15 border border-white/20 text-amber-300 font-bold text-xs sm:text-sm mb-5">
+        ✨ فعالية تعليمية مجانية ومميزة للأطفال
+      </span>
 
-        <div class="bg-blue-950/60 border border-blue-400/20 rounded-2xl p-5 max-w-md mx-auto mb-6 shadow-inner">
-          <div class="flex items-center justify-center gap-2 mb-1">
-            <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span class="text-sm font-bold text-blue-200">إجمالي الأطفال المسجلين</span>
-          </div>
-          <div id="liveTotalCounter" class="text-4xl sm:text-5xl font-extrabold text-amber-400 my-1 tracking-tight">
-            0
-          </div>
-          <p class="text-xs text-emerald-300 font-semibold">التسجيل مفتوح ومجاني للجميع</p>
-        </div>
+      <h2 class="text-3xl sm:text-5xl font-black leading-tight mb-4">
+        ورشة عمل مجانية للأطفال بمركز شباب المنشأة الكبرى
+      </h2>
 
-        <div class="flex flex-wrap justify-center gap-2">
-          <button type="button" onclick="shareWhatsApp()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow transition">📱 مشاركة عبر واتساب</button>
-          <button type="button" onclick="shareFacebook()" class="bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow transition">📘 مشاركة عبر فيسبوك</button>
-          <button type="button" onclick="copyPageLink()" class="bg-white/15 hover:bg-white/25 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition">🔗 نسخ رابط التسجيل</button>
+      <p class="text-blue-100 text-sm sm:text-lg max-w-2xl mx-auto leading-relaxed mb-8">
+        إشراف وتنظيم: <strong class="text-amber-300 font-extrabold">المدربة نوره صبحي</strong> - مدربة حساب ذهني وتنمية مهارات الأطفال
+      </p>
+
+      <!-- العداد الحي -->
+      <div class="max-w-md mx-auto bg-indigo-950/65 backdrop-blur-md border border-white/15 rounded-3xl p-6 shadow-2xl mb-8">
+        <div class="flex items-center justify-center gap-2 mb-1">
+          <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+          <span class="text-sm font-bold text-blue-100">إجمالي الأطفال المسجلين</span>
         </div>
+        <div id="liveTotalCounter" class="text-5xl sm:text-6xl font-black text-amber-400 my-2">
+          0
+        </div>
+        <p class="text-xs text-emerald-300 font-bold">التسجيل مفتوح ومجاني للجميع</p>
+      </div>
+
+      <!-- أزرار المشاركة -->
+      <div class="flex flex-wrap justify-center gap-3 max-w-md mx-auto">
+        <button
+          type="button"
+          onclick="shareWhatsApp()"
+          class="flex-1 min-w-[160px] py-3 px-4 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm shadow-lg transition flex items-center justify-center gap-2 cursor-pointer"
+        >
+          <span>📱</span>
+          <span>مشاركة عبر واتساب</span>
+        </button>
+
+        <button
+          type="button"
+          onclick="shareFacebook()"
+          class="flex-1 min-w-[160px] py-3 px-4 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm shadow-lg transition flex items-center justify-center gap-2 cursor-pointer"
+        >
+          <span>📘</span>
+          <span>مشاركة عبر فيسبوك</span>
+        </button>
+
+        <button
+          type="button"
+          onclick="copyPageLink()"
+          class="w-full py-3 px-4 rounded-2xl bg-white/15 hover:bg-white/25 text-white font-bold text-sm border border-white/20 transition flex items-center justify-center gap-2 cursor-pointer"
+        >
+          <span>🔗</span>
+          <span>نسخ رابط التسجيل</span>
+        </button>
       </div>
     </div>
+  </section>
 
-    <div class="max-w-xl mx-auto px-4 -mt-10">
-      <div class="bg-white rounded-3xl shadow-xl border border-slate-100 p-6 sm:p-8">
-        <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
-          <span class="text-3xl">🧮</span>
+  <!-- نموذج تسجيل ولي الأمر -->
+  <main class="max-w-xl mx-auto px-4 -mt-12 pb-16 relative z-20">
+    <div class="bg-white rounded-3xl shadow-xl border border-slate-100 p-6 sm:p-8">
+      <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
+        <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-700 flex items-center justify-center text-2xl shrink-0">
+          📝
+        </div>
+        <div>
+          <h3 class="text-xl font-black text-slate-900">استمارة تسجيل طفل</h3>
+          <p class="text-xs sm:text-sm text-slate-500 font-semibold">يرجى إدخال البيانات بدقة لتأكيد حجز مقعد طفلك</p>
+        </div>
+      </div>
+
+      <form id="registrationForm" class="space-y-4">
+        <div>
+          <label class="block text-sm font-bold text-slate-700 mb-1.5">اسم الطفل بالكامل <span class="text-rose-500">*</span></label>
+          <input
+            type="text"
+            id="childName"
+            required
+            placeholder="مثال: أحمد محمد محمود"
+            class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-indigo-600 focus:ring-4 focus:ring-indigo-600/10 outline-none transition text-sm font-semibold"
+          />
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <h3 class="text-lg sm:text-xl font-extrabold text-slate-900">استمارة تسجيل طفل في الورشة</h3>
-            <p class="text-xs text-slate-500">جميع الحقول المميزة بعلامة (*) مطلوبة — يمكنك تسجيل أكثر من طفل</p>
+            <label class="block text-sm font-bold text-slate-700 mb-1.5">عمر الطفل (بالسنوات) <span class="text-rose-500">*</span></label>
+            <input
+              type="number"
+              id="childAge"
+              min="3"
+              max="18"
+              required
+              placeholder="مثال: 7"
+              class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-indigo-600 focus:ring-4 focus:ring-indigo-600/10 outline-none transition text-sm font-semibold"
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm font-bold text-slate-700 mb-1.5">المرحلة الدراسية <span class="text-rose-500">*</span></label>
+            <select
+              id="childGrade"
+              required
+              class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-indigo-600 focus:ring-4 focus:ring-indigo-600/10 outline-none transition text-sm font-semibold bg-white"
+            >
+              <option value="">اختر المرحلة...</option>
+              <option value="تمهيدي / حضانة">تمهيدي / حضانة</option>
+              <option value="KG1">KG1</option>
+              <option value="KG2">KG2</option>
+              <option value="الصف الأول الابتدائي">الصف الأول الابتدائي</option>
+              <option value="الصف الثاني الابتدائي">الصف الثاني الابتدائي</option>
+              <option value="الصف الثالث الابتدائي">الصف الثالث الابتدائي</option>
+              <option value="الصف الرابع الابتدائي">الصف الرابع الابتدائي</option>
+              <option value="الصف الخامس الابتدائي">الصف الخامس الابتدائي</option>
+              <option value="الصف السادس الابتدائي">الصف السادس الابتدائي</option>
+              <option value="المرحلة الإعدادية">المرحلة الإعدادية</option>
+            </select>
           </div>
         </div>
 
-        <div id="successAlert" class="hidden bg-emerald-50 border border-emerald-200 text-emerald-900 rounded-2xl p-6 text-center mb-4">
-          <div class="text-4xl mb-2">🎉</div>
-          <h4 class="font-extrabold text-lg mb-2">🎉 تم تسجيل بيانات الطفل بنجاح! نسعد بانضمامكم لورشة المدربة نوره صبحي</h4>
-          <p class="text-xs text-emerald-700 mb-5">تم حفظ البيانات على السحابة وتحديث العداد بنجاح.</p>
-          <button type="button" onclick="resetFormForAnother()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold px-6 py-3 rounded-xl shadow transition">
-            + تسجيل طفل آخر
-          </button>
+        <div>
+          <label class="block text-sm font-bold text-slate-700 mb-1.5">اسم ولي الأمر <span class="text-rose-500">*</span></label>
+          <input
+            type="text"
+            id="parentName"
+            required
+            placeholder="مثال: أ/ محمد محمود"
+            class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-indigo-600 focus:ring-4 focus:ring-indigo-600/10 outline-none transition text-sm font-semibold"
+          />
         </div>
 
-        <div id="formErrorAlert" class="hidden bg-red-50 border border-red-200 text-red-800 rounded-2xl p-4 text-center mb-4">
-          <p id="formErrorText" class="font-bold text-sm"></p>
+        <div>
+          <label class="block text-sm font-bold text-slate-700 mb-1.5">رقم الهاتف (واتساب) <span class="text-rose-500">*</span></label>
+          <input
+            type="tel"
+            id="parentPhone"
+            required
+            dir="ltr"
+            placeholder="01xxxxxxxxx"
+            class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-indigo-600 focus:ring-4 focus:ring-indigo-600/10 outline-none transition text-sm font-bold text-right"
+          />
         </div>
 
-        <form id="registrationForm" onsubmit="submitRegistration(event)" class="space-y-4">
-          <div>
-            <label class="block text-sm font-bold text-slate-700 mb-1">1. اسم الطفل <span class="text-red-500">*</span></label>
-            <input type="text" id="childName" required placeholder="اكتب اسم الطفل بالكامل" class="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-indigo-600 focus:outline-none" />
-          </div>
+        <div>
+          <label class="block text-sm font-bold text-slate-700 mb-1.5">ملاحظات إضافية (اختياري)</label>
+          <textarea
+            id="notes"
+            rows="2"
+            placeholder="أي ملاحظات تود إخبار المدربة بها..."
+            class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-indigo-600 focus:ring-4 focus:ring-indigo-600/10 outline-none transition text-sm font-semibold"
+          ></textarea>
+        </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-sm font-bold text-slate-700 mb-1">2. عمر الطفل (بالسنوات) <span class="text-red-500">*</span></label>
-              <input type="number" id="childAge" required min="3" max="18" placeholder="مثال: 8" class="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-indigo-600 focus:outline-none" />
-            </div>
+        <button
+          type="submit"
+          id="submitBtn"
+          class="w-full py-4 px-6 rounded-2xl bg-indigo-900 hover:bg-indigo-800 text-white font-black text-base shadow-lg shadow-indigo-900/20 transition active:scale-[0.99] cursor-pointer"
+        >
+          تأكيد تسجيل الطفل مجاناً ✨
+        </button>
+      </form>
 
-            <div>
-              <label class="block text-sm font-bold text-slate-700 mb-1">3. المرحلة الدراسية <span class="text-red-500">*</span></label>
-              <select id="childGrade" required class="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm bg-white focus:border-indigo-600 focus:outline-none">
-                <option value="">اختر المرحلة الدراسية</option>
-                <option value="رياض أطفال كي جي">رياض أطفال كي جي</option>
-                <option value="المرحلة الابتدائية">المرحلة الابتدائية</option>
-                <option value="المرحلة الإعدادية">المرحلة الإعدادية</option>
-              </select>
-            </div>
-          </div>
-
-          <div>
-            <label class="block text-sm font-bold text-slate-700 mb-1">4. اسم ولي الأمر <span class="text-red-500">*</span></label>
-            <input type="text" id="parentName" required placeholder="اسم الأب أو الأم" class="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-indigo-600 focus:outline-none" />
-          </div>
-
-          <div>
-            <label class="block text-sm font-bold text-slate-700 mb-1">5. رقم الهاتف (واتساب) <span class="text-red-500">*</span></label>
-            <input type="tel" id="parentPhone" required pattern="[0-9]{11}" title="يرجى إدخال رقم هاتف صحيح مكون من 11 رقماً" placeholder="01xxxxxxxxx" class="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm text-left focus:border-indigo-600 focus:outline-none" dir="ltr" />
-          </div>
-
-          <div>
-            <label class="block text-sm font-bold text-slate-700 mb-1">6. ملاحظات إضافية (اختياري)</label>
-            <textarea id="notes" rows="2" placeholder="أي ملاحظات تودين إخبار المدربة بها..." class="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm focus:border-indigo-600 focus:outline-none"></textarea>
-          </div>
-
-          <button type="submit" id="submitBtn" class="w-full bg-indigo-900 hover:bg-indigo-800 disabled:bg-indigo-400 disabled:cursor-not-allowed text-white font-extrabold text-base py-4 rounded-2xl shadow-lg transition mt-2 flex items-center justify-center gap-2">
-            <span>✅ تأكيد التسجيل في الورشة</span>
-          </button>
-        </form>
+      <!-- رسالة نجاح التسجيل -->
+      <div id="successCard" class="hidden text-center py-6 space-y-4">
+        <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-3xl mx-auto">
+          🎉
+        </div>
+        <h4 class="text-2xl font-black text-slate-900">تم تسجيل طفلك بنجاح!</h4>
+        <p class="text-sm text-slate-600 leading-relaxed">
+          شكراً لتسجيلكم في ورشة العمل المجانية بمركز شباب المنشأة الكبرى تحت إشراف <strong>المدربة نوره صبحي</strong>. سنتواصل معكم عبر الواتساب لتأكيد الموعد.
+        </p>
+        <button
+          type="button"
+          onclick="resetFormForAnother()"
+          class="px-6 py-3 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-900 font-bold text-sm transition cursor-pointer"
+        >
+          + تسجيل طفل آخر
+        </button>
       </div>
     </div>
   </main>
 
-  <div id="adminLoginModal" class="hidden fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl">
-      <div class="flex justify-between items-center mb-4">
-        <h3 class="font-extrabold text-lg text-slate-900">🔒 دخول لوحة الإدارة</h3>
-        <button type="button" onclick="closeAdminModal()" class="text-slate-400 hover:text-slate-700 text-xl font-bold">✕</button>
+  <!-- تذييل الصفحة -->
+  <footer class="text-center pb-8 px-4 text-xs text-slate-500 font-semibold">
+    جميع الحقوق محفوظة © المدربة نوره صبحي - مركز شباب المنشأة الكبرى
+  </footer>
+
+  <!-- نافذة تسجيل دخول الإدارة -->
+  <div id="adminLoginModal" class="fixed inset-0 z-50 hidden bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl relative">
+      <button
+        type="button"
+        onclick="closeAdminModals()"
+        class="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold flex items-center justify-center absolute top-5 left-5 cursor-pointer"
+      >
+        ✕
+      </button>
+
+      <div class="text-center mb-6">
+        <div class="w-14 h-14 rounded-2xl bg-indigo-900 text-amber-400 flex items-center justify-center text-2xl mx-auto mb-3 shadow-md">
+          🔐
+        </div>
+        <h3 class="text-xl font-black text-slate-900">دخول لوحة الإدارة</h3>
+        <p class="text-xs text-slate-500 font-semibold mt-1">خاصة بالمدربة نوره صبحي فقط</p>
       </div>
-      <form onsubmit="adminLogin(event)" class="space-y-3">
+
+      <form id="adminLoginForm" class="space-y-4">
         <div>
-          <label class="block text-xs font-bold text-slate-600 mb-1">البريد الإلكتروني للإدارة</label>
-          <input type="email" id="adminEmail" required placeholder="admin@example.com" class="w-full rounded-xl border border-slate-300 px-3 py-2.5 text-sm text-left" dir="ltr" />
+          <label class="block text-xs font-bold text-slate-700 mb-1">البريد الإلكتروني</label>
+          <input
+            type="email"
+            id="adminEmail"
+            required
+            dir="ltr"
+            placeholder="admin@example.com"
+            class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-indigo-600 outline-none text-sm font-semibold text-left"
+          />
         </div>
+
         <div>
-          <label class="block text-xs font-bold text-slate-600 mb-1">كلمة المرور</label>
-          <input type="password" id="adminPassword" required placeholder="••••••••" class="w-full rounded-xl border border-slate-300 px-3 py-2.5 text-sm text-left" dir="ltr" />
+          <label class="block text-xs font-bold text-slate-700 mb-1">كلمة المرور</label>
+          <input
+            type="password"
+            id="adminPassword"
+            required
+            dir="ltr"
+            placeholder="••••••••"
+            class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-indigo-600 outline-none text-sm font-semibold text-left"
+          />
         </div>
-        <p id="loginErrorMsg" class="hidden text-xs text-red-600 font-bold"></p>
-        <button type="submit" id="adminLoginBtn" class="w-full bg-indigo-900 hover:bg-indigo-800 text-white font-bold py-3 rounded-xl text-sm transition">
-          دخول اللوحة
+
+        <p id="loginErrorMsg" class="hidden text-xs font-bold text-rose-600 bg-rose-50 p-3 rounded-xl text-center"></p>
+
+        <button
+          type="submit"
+          id="loginSubmitBtn"
+          class="w-full py-3.5 rounded-xl bg-indigo-900 hover:bg-indigo-800 text-white font-black text-sm shadow-lg transition cursor-pointer"
+        >
+          تسجيل الدخول
         </button>
       </form>
     </div>
   </div>
 
-  <section id="adminDashboard" class="hidden max-w-4xl mx-auto px-4 py-6">
-    <div class="bg-white rounded-3xl shadow-lg border border-slate-200 p-5 sm:p-6">
-      <div class="flex flex-wrap items-center justify-between gap-3 pb-4 mb-5 border-b border-slate-100">
+  <!-- نافذة لوحة تحكم الإدارة الكاملة -->
+  <div id="adminDashboardModal" class="fixed inset-0 z-50 hidden bg-slate-950/75 backdrop-blur-sm overflow-y-auto p-3 sm:p-6">
+    <div class="bg-white rounded-3xl max-w-5xl mx-auto p-5 sm:p-8 shadow-2xl my-4">
+      <!-- رأس اللوحة -->
+      <div class="flex flex-wrap items-center justify-between gap-4 pb-5 border-b border-slate-200">
         <div>
-          <h2 class="text-xl font-extrabold text-indigo-950">📊 لوحة إدارة الورشة</h2>
-          <p class="text-xs text-slate-500">متابعة المسجلين والحضور وتصدير البيانات (التسجيل مفتوح بلا حد أقصى)</p>
+          <h3 class="text-xl sm:text-2xl font-black text-slate-900">📋 قائمة الأطفال المسجلين</h3>
+          <p class="text-xs sm:text-sm text-slate-500 font-semibold">إدارة الحضور والتواصل مع أولياء الأمور</p>
         </div>
-        <div class="flex gap-2">
-          <button type="button" onclick="exportToCSV()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3.5 py-2 rounded-xl transition">📥 تصدير Excel</button>
-          <button type="button" onclick="adminLogout()" class="bg-slate-200 hover:bg-slate-300 text-slate-800 text-xs font-bold px-3.5 py-2 rounded-xl transition">خروج</button>
+
+        <div class="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            onclick="exportToCSV()"
+            class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs sm:text-sm shadow transition cursor-pointer"
+          >
+            📥 تصدير Excel
+          </button>
+
+          <button
+            type="button"
+            onclick="handleAdminLogout()"
+            class="px-4 py-2.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold text-xs sm:text-sm transition cursor-pointer"
+          >
+            تسجيل خروج
+          </button>
+
+          <button
+            type="button"
+            onclick="closeAdminModals()"
+            class="w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold flex items-center justify-center cursor-pointer"
+          >
+            ✕
+          </button>
         </div>
       </div>
 
-      <div class="bg-slate-50 rounded-2xl p-4 mb-5 flex flex-wrap items-center justify-between gap-3">
-        <div class="text-sm font-bold text-slate-700">
-          إجمالي الأطفال المسجلين: <span id="adminTotalCount" class="text-indigo-700 text-lg font-extrabold">0</span> طفل
+      <!-- إحصائيات سريعة -->
+      <div class="grid grid-cols-3 gap-3 my-5">
+        <div class="bg-indigo-50 rounded-2xl p-4 text-center">
+          <div class="text-xs font-bold text-indigo-700">الإجمالي</div>
+          <div id="statTotal" class="text-2xl font-black text-indigo-950 mt-1">0</div>
         </div>
-        <div class="text-xs font-bold text-emerald-700 bg-emerald-100 px-3 py-1.5 rounded-lg">
-          حالة الورشة: تسجيل مفتوح بلا حدود
+        <div class="bg-emerald-50 rounded-2xl p-4 text-center">
+          <div class="text-xs font-bold text-emerald-700">الحضور</div>
+          <div id="statAttended" class="text-2xl font-black text-emerald-900 mt-1">0</div>
+        </div>
+        <div class="bg-amber-50 rounded-2xl p-4 text-center">
+          <div class="text-xs font-bold text-amber-700">لم يحضر بعد</div>
+          <div id="statPending" class="text-2xl font-black text-amber-900 mt-1">0</div>
         </div>
       </div>
 
-      <div class="mb-4">
-        <input type="text" id="searchInput" oninput="renderRegistrationsTable()" placeholder="🔍 ابحثي باسم الطفل أو رقم هاتف ولي الأمر..." class="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm" />
+      <!-- البحث -->
+      <div class="mb-5">
+        <input
+          type="text"
+          id="adminSearchInput"
+          oninput="renderAdminList()"
+          placeholder="🔍 ابحثي باسم الطفل أو ولي الأمر أو رقم الهاتف..."
+          class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-indigo-600 outline-none text-sm font-semibold"
+        />
       </div>
 
-      <div class="overflow-x-auto">
-        <table class="w-full text-right text-xs sm:text-sm border-collapse">
-          <thead>
-            <tr class="bg-slate-100 text-slate-700">
-              <th class="p-3 rounded-r-xl">#</th>
-              <th class="p-3">الطفل</th>
-              <th class="p-3">العمر / المرحلة</th>
-              <th class="p-3">ولي الأمر والهاتف</th>
-              <th class="p-3">الحضور</th>
-              <th class="p-3 rounded-l-xl">حذف</th>
-            </tr>
-          </thead>
-          <tbody id="registrationsTableBody" class="divide-y divide-slate-100"></tbody>
-        </table>
+      <!-- قائمة المسجلين -->
+      <div id="registrationsListContainer" class="space-y-3 max-h-[60vh] overflow-y-auto pr-1">
+        <p class="text-center text-slate-400 py-8 font-bold">جاري تحميل البيانات...</p>
       </div>
     </div>
-  </section>
+  </div>
+
+  <!-- سكربت الربط مع قاعدة البيانات والمصادقة -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import {
-      getFirestore, collection, addDoc, onSnapshot, doc, updateDoc, deleteDoc, setDoc, increment, serverTimestamp, query, orderBy
+      getFirestore,
+      collection,
+      addDoc,
+      onSnapshot,
+      query,
+      orderBy,
+      doc,
+      updateDoc,
+      deleteDoc,
+      setDoc,
+      increment,
+      serverTimestamp
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
     import {
-      getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged
+      getAuth,
+      signInWithEmailAndPassword,
+      signOut,
+      onAuthStateChanged
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
     const firebaseConfig = {
@@ -219,232 +405,75 @@
     const auth = getAuth(app);
 
     let allRegistrations = [];
+    let currentUser = null;
+    let pendingDeleteId = null;
     let unsubscribeAdminRegs = null;
-    let isSubmitting = false;
-    const publicStatsRef = doc(db, "stats", "public");
 
+    // دالة إظهار الإشعارات
+    function showToast(message, icon = "✅") {
+      const box = document.getElementById("toastBox");
+      document.getElementById("toastText").textContent = message;
+      document.getElementById("toastIcon").textContent = icon;
+      box.classList.remove("hidden");
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => {
+        box.classList.add("hidden");
+      }, 3200);
+    }
+
+    // الاستماع الحي للعداد العام في الصفحة الرئيسية
+    const publicStatsRef = doc(db, "stats", "public");
     onSnapshot(publicStatsRef, (snap) => {
-      const total = snap.exists() && typeof snap.data().totalChildren === "number" ? snap.data().totalChildren : 0;
-      document.getElementById("liveTotalCounter").textContent = total;
+      const total = snap.exists() && typeof snap.data().totalChildren === "number"
+        ? snap.data().totalChildren
+        : 0;
+      const counterEl = document.getElementById("liveTotalCounter");
+      if (counterEl) {
+        counterEl.textContent = total;
+      }
     });
 
-    window.submitRegistration = async (e) => {
-      e.preventDefault();
-      if (isSubmitting) return;
-      const submitBtn = document.getElementById("submitBtn");
-      const errorAlert = document.getElementById("formErrorAlert");
-      const errorText = document.getElementById("formErrorText");
+    // بدء الاستماع لقائمة المسجلين بعد دخول المدربة
+    function startAdminListener() {
+      if (unsubscribeAdminRegs) unsubscribeAdminRegs();
+      const q = query(collection(db, "registrations"), orderBy("createdAt", "desc"));
+      unsubscribeAdminRegs = onSnapshot(q, (snapshot) => {
+        allRegistrations = [];
+        snapshot.forEach((docSnap) => {
+          allRegistrations.push({ id: docSnap.id, ...docSnap.data() });
+        });
+        renderAdminList();
+      }, (error) => {
+        console.error("Firestore admin read error:", error);
+      });
+    }
 
-      errorAlert.classList.add("hidden");
-      isSubmitting = true;
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = `<span>جاري حفظ البيانات على السحابة...</span>`;
+    // متابعة حالة تسجيل دخول المدربة
+    onAuthStateChanged(auth, (user) => {
+      currentUser = user;
+      if (user) {
+        startAdminListener();
+        if (!document.getElementById("adminLoginModal").classList.contains("hidden")) {
+          document.getElementById("adminLoginModal").classList.add("hidden");
+          document.getElementById("adminDashboardModal").classList.remove("hidden");
+        }
+      } else if (unsubscribeAdminRegs) {
+        unsubscribeAdminRegs();
+        unsubscribeAdminRegs = null;
+      }
+    });
+
+    // إرسال استمارة تسجيل الطفل وتحديث العداد العام
+    document.getElementById("registrationForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById("submitBtn");
+      btn.disabled = true;
+      btn.textContent = "جاري حفظ البيانات...";
 
       try {
         await addDoc(collection(db, "registrations"), {
           childName: document.getElementById("childName").value.trim(),
-          childAge: Number(document.getElementById("childAge").value),
+          childAge: document.getElementById("childAge").value.trim(),
           childGrade: document.getElementById("childGrade").value,
           parentName: document.getElementById("parentName").value.trim(),
-          parentPhone: document.getElementById("parentPhone").value.trim(),
-          notes: document.getElementById("notes").value.trim(),
-          attended: false,
-          createdAt: serverTimestamp()
-        });
-        await setDoc(publicStatsRef, { totalChildren: increment(1) }, { merge: true });
-        document.getElementById("registrationForm").reset();
-        document.getElementById("registrationForm").classList.add("hidden");
-        document.getElementById("successAlert").classList.remove("hidden");
-      } catch (err) {
-        errorText.textContent = "عذراً، تعذر حفظ البيانات حالياً. يرجى التحقق من الإنترنت والمحاولة مرة أخرى.";
-        errorAlert.classList.remove("hidden");
-      } finally {
-        isSubmitting = false;
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = `<span>✅ تأكيد التسجيل في الورشة</span>`;
-      }
-    };
-
-    window.resetFormForAnother = () => {
-      document.getElementById("successAlert").classList.add("hidden");
-      document.getElementById("formErrorAlert").classList.add("hidden");
-      document.getElementById("registrationForm").reset();
-      document.getElementById("registrationForm").classList.remove("hidden");
-    };
-
-    function startAdminListener() {
-      if (unsubscribeAdminRegs) unsubscribeAdminRegs();
-      const q = query(collection(db, "registrations"), orderBy("createdAt", "desc"));
-      unsubscribeAdminRegs = onSnapshot(q, async (snapshot) => {
-        allRegistrations = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-        document.getElementById("adminTotalCount").textContent = allRegistrations.length;
-        renderRegistrationsTable();
-        try { await setDoc(publicStatsRef, { totalChildren: allRegistrations.length }, { merge: true }); } catch (_) {}
-      });
-    }
-
-    window.openAdminModal = () => {
-      if (auth.currentUser) {
-        document.getElementById("publicSection").classList.add("hidden");
-        document.getElementById("adminDashboard").classList.remove("hidden");
-      } else {
-        document.getElementById("adminLoginModal").classList.remove("hidden");
-      }
-    };
-
-    window.closeAdminModal = () => document.getElementById("adminLoginModal").classList.add("hidden");
-
-    window.adminLogin = async (e) => {
-      e.preventDefault();
-      const errEl = document.getElementById("loginErrorMsg");
-      const loginBtn = document.getElementById("adminLoginBtn");
-      errEl.classList.add("hidden");
-      loginBtn.disabled = true;
-      loginBtn.textContent = "جاري الدخول...";
-      try {
-        await signInWithEmailAndPassword(auth, document.getElementById("adminEmail").value.trim(), document.getElementById("adminPassword").value);
-        closeAdminModal();
-      } catch (err) {
-        errEl.textContent = "بيانات الدخول غير صحيحة.";
-        errEl.classList.remove("hidden");
-      } finally {
-        loginBtn.disabled = false;
-        loginBtn.textContent = "دخول اللوحة";
-      }
-    };
-
-    window.adminLogout = async () => {
-      if (unsubscribeAdminRegs) { unsubscribeAdminRegs(); unsubscribeAdminRegs = null; }
-      allRegistrations = [];
-      await signOut(auth);
-      document.getElementById("adminDashboard").classList.add("hidden");
-      document.getElementById("publicSection").classList.remove("hidden");
-    };
-
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        document.getElementById("publicSection").classList.add("hidden");
-        document.getElementById("adminDashboard").classList.remove("hidden");
-        startAdminListener();
-      } else {
-        document.getElementById("adminDashboard").classList.add("hidden");
-        document.getElementById("publicSection").classList.remove("hidden");
-      }
-    });
-
-    window.toggleAttendance = async (id, current) => {
-      try { await updateDoc(doc(db, "registrations", id), { attended: !current }); } catch (_) { alert("تعذر التحديث."); }
-    };
-
-    window.deleteReg = async (id) => {
-      if (confirm("هل أنتِ متأكدة من حذف هذا التسجيل نهائياً؟")) {
-        try { await deleteDoc(doc(db, "registrations", id)); } catch (_) { alert("تعذر الحذف."); }
-      }
-    };
-
-    function escapeHTML(str) {
-      return String(str || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-    }
-
-    window.renderRegistrationsTable = () => {
-      const term = (document.getElementById("searchInput").value || "").toLowerCase().trim();
-      const tbody = document.getElementById("registrationsTableBody");
-      const filtered = allRegistrations.filter(r => (r.childName || "").toLowerCase().includes(term) || (r.parentPhone || "").includes(term));
-      if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-slate-400">لا توجد بيانات مطابقة حالياً</td></tr>`;
-        return;
-      }
-      tbody.innerHTML = filtered.map((r, index) => `
-        <tr>
-          <td class="p-3 text-slate-400 font-bold">${index + 1}</td>
-          <td class="p-3 font-bold text-slate-900">${escapeHTML(r.childName)}${r.notes ? `<div class="text-xs font-normal text-slate-500 mt-0.5">ملاحظة: ${escapeHTML(r.notes)}</div>` : ""}</td>
-          <td class="p-3 text-slate-600">${escapeHTML(r.childAge)} سنوات<br><span class="text-xs text-indigo-700">${escapeHTML(r.childGrade)}</span></td>
-          <td class="p-3 text-slate-600">${escapeHTML(r.parentName)}<br><a href="tel:${escapeHTML(r.parentPhone)}" class="text-xs text-emerald-700 font-bold" dir="ltr">${escapeHTML(r.parentPhone)}</a></td>
-          <td class="p-3"><button type="button" onclick="toggleAttendance('${r.id}', ${!!r.attended})" class="px-2.5 py-1 rounded-lg text-xs font-bold ${r.attended ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-600'}">${r.attended ? '✓ حضر' : 'لم يحضر'}</button></td>
-          <td class="p-3"><button type="button" onclick="deleteReg('${r.id}')" class="text-red-500 hover:text-red-700 font-bold text-xs">حذف</button></td>
-        </tr>
-      `).join("");
-    };
-
-    window.exportToCSV = () => {
-      let csv = "\uFEFFم,اسم الطفل,العمر,المرحلة الدراسية,ولي الأمر,رقم الهاتف,الحضور,ملاحظات\n";
-      allRegistrations.forEach((r, idx) => {
-        const clean = (val) => `"${String(val || "").replace(/"/g, '""')}"`;
-        csv += `${idx + 1},${clean(r.childName)},${clean(r.childAge)},${clean(r.childGrade)},${clean(r.parentName)},${clean(r.parentPhone)},${clean(r.attended ? "حاضر" : "غائب")},${clean(r.notes)}\n`;
-      });
-      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob);
-      a.download = "مسجلين_ورشة_نوره_صبحي.csv";
-      a.click();
-    };
-
-    window.shareWhatsApp = () => {
-      const text = encodeURIComponent("سجلوا أطفالكم الآن في ورشة العمل المجانية وتنمية المهارات مع المدربة نوره صبحي بمركز شباب المنشأة الكبرى:\n" + window.location.href);
-      window.open("https://wa.me/?text=" + text, "_blank");
-    };
-    window.shareFacebook = () => window.open("https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(window.location.href), "_blank");
-    window.copyPageLink = () => { navigator.clipboard.writeText(window.location.href); alert("تم نسخ رابط التسجيل!"); };
-  </script>
-</body>
-    window.renderRegistrationsTable = () => {
-      const term = (document.getElementById("searchInput").value || "").toLowerCase().trim();
-      const tbody = document.getElementById("registrationsTableBody");
-      const filtered = allRegistrations.filter(r =>
-        (r.childName || "").toLowerCase().includes(term) ||
-        (r.parentPhone || "").includes(term)
-      );
-
-      if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-slate-400">لا توجد بيانات مطابقة حالياً</td></tr>`;
-        return;
-      }
-
-      tbody.innerHTML = filtered.map((r, index) => `
-        <tr>
-          <td class="p-3 text-slate-400 font-bold">${index + 1}</td>
-          <td class="p-3 font-bold text-slate-900">${escapeHTML(r.childName)}${r.notes ? `<div class="text-xs font-normal text-slate-500 mt-0.5">ملاحظة: ${escapeHTML(r.notes)}</div>` : ""}</td>
-          <td class="p-3 text-slate-600">${escapeHTML(r.childAge)} سنوات<br><span class="text-xs text-indigo-700">${escapeHTML(r.childGrade)}</span></td>
-          <td class="p-3 text-slate-600">${escapeHTML(r.parentName)}<br><a href="tel:${escapeHTML(r.parentPhone)}" class="text-xs text-emerald-700 font-bold" dir="ltr">${escapeHTML(r.parentPhone)}</a></td>
-          <td class="p-3">
-            <button type="button" onclick="toggleAttendance('${r.id}', ${!!r.attended})" class="px-2.5 py-1 rounded-lg text-xs font-bold ${r.attended ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-600'}">
-              ${r.attended ? '✓ حضر' : 'لم يحضر'}
-            </button>
-          </td>
-          <td class="p-3">
-            <button type="button" onclick="deleteReg('${r.id}')" class="text-red-500 hover:text-red-700 font-bold text-xs">حذف</button>
-          </td>
-        </tr>
-      `).join("");
-    };
-
-    window.exportToCSV = () => {
-      let csv = "\uFEFFم,اسم الطفل,العمر,المرحلة الدراسية,ولي الأمر,رقم الهاتف,الحضور,ملاحظات\n";
-      allRegistrations.forEach((r, idx) => {
-        const clean = (val) => `"${String(val || "").replace(/"/g, '""')}"`;
-        csv += `${idx + 1},${clean(r.childName)},${clean(r.childAge)},${clean(r.childGrade)},${clean(r.parentName)},${clean(r.parentPhone)},${clean(r.attended ? "حاضر" : "غائب")},${clean(r.notes)}\n`;
-      });
-      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob);
-      a.download = "مسجلين_ورشة_نوره_صبحي.csv";
-      a.click();
-    };
-
-    window.shareWhatsApp = () => {
-      const text = encodeURIComponent("سجلوا أطفالكم الآن في ورشة العمل المجانية وتنمية المهارات مع المدربة نوره صبحي بمركز شباب المنشأة الكبرى:\n" + window.location.href);
-      window.open("https://wa.me/?text=" + text, "_blank");
-    };
-
-    window.shareFacebook = () => {
-      window.open("https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(window.location.href), "_blank");
-    };
-
-    window.copyPageLink = () => {
-      navigator.clipboard.writeText(window.location.href);
-      alert("تم نسخ رابط التسجيل!");
-    };
-  </script>
-</body>
-</html>
-
+          parentPhone: documen
