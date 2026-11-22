@@ -216,7 +216,7 @@ onclick="document.getElementById('adminLoginModal').classList.remove('hidden')"
       </form>
 
       <!-- رسالة نجاح التسجيل -->
-      <div id="successCard" class="hidden text-center py-6 space-y-4">
+      <div id="successAlert" class="hidden text-center py-6 space-y-4">
         <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-3xl mx-auto">
           🎉
         </div>
@@ -226,7 +226,7 @@ onclick="document.getElementById('adminLoginModal').classList.remove('hidden')"
         </p>
         <button
           type="button"
-          onclick="resetFormForAnother()"
+          id="registerAnotherBtn"
           class="px-6 py-3 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-900 font-bold text-sm transition cursor-pointer"
         >
           + تسجيل طفل آخر
